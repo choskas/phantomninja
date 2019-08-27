@@ -9,22 +9,26 @@
     flex-direction: column;
     justify-content: center;
     background: black;
+    
 
 }
 
 #canvas {
     border: 10px solid #c93c20;
+    
 }
 
 #phantomlogo{
     width:300px;
-    height: 150px;
+    height: 220px;
 }
 
 #titulos{
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
+    margin-left: 10vw;
+    height: 220px;
 }
 
 div span{
@@ -43,4 +47,52 @@ div span{
 #wasd{
     margin-left: 150px;
     margin-right: 30px;
+}
+
+#menu{
+    display: flex;
+    flex-direction: row;
+    background-color: black;
+    font-size: 50px;
+    height: 1000px;
+    
+}
+
+#gameboard{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    
+}
+
+.btn-primary{
+    height: 70px;
+    color: black !important;
+    background: url('./assets/electic.jpg') !important;
+    width: 300px;
+    font-family: 'Teko';
+    font-size: 40px !important;
+    font-weight: bold !important;
+}
+
+#buttondiv{
+    display: flex;
+    margin-top: 700px;
+    margin-left: 50px;
+}
+
+#logodiv{
+    display: flex;
+    flex-direction: column
+}
+
+.enemyimage{
+    width: 60px;
+    height: 80px;
+}
+
+#enemydiv{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between
 }
