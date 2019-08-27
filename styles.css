@@ -1,0 +1,46 @@
+*{
+    border: 0;
+    padding: 0;
+
+}
+
+#principal {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background: black;
+
+}
+
+#canvas {
+    border: 10px solid #c93c20;
+}
+
+#phantomlogo{
+    width:300px;
+    height: 150px;
+}
+
+#titulos{
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+}
+
+div span{
+    color: white;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 30px;
+    margin-top: 60px;
+}
+
+#click{
+    margin-left: 75px;
+    margin-top: 20px;
+
+}
+
+#wasd{
+    margin-left: 150px;
+    margin-right: 30px;
+}
