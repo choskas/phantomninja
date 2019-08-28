@@ -184,20 +184,17 @@ function drawSun() {
 }
 
 function getSun() {
-    sunCoins.forEach(suns => {
-        if (player1.isTouching(suns)) return countSuns()
-
-
-
+    sunCoins.forEach((suns, index) => {
+        if (player1.isTouching(suns)) {
+            score++
+            sunCoins.splice(index, 1)
+        }
     })
 
 
 }
 
-function countSuns() {
-    sunCoins.alive
-    score++
-}
+
 
 
 function generateEnemie() {
@@ -287,6 +284,7 @@ function update() {
     generateSun()
     drawSun()
     getSun()
+
     drawScore()
     drawScore2()
     killPlayer()
@@ -330,6 +328,8 @@ function killenemie(xclick, yclick) {
     badCharacters.forEach(character => {
         if ((character.x >= xmin && character.x <= xmax) && (character.y >= ymin && character.y <= ymax)) {
             character.alive = false
+            character.x = 2000
+            character.y = 2000
             deadEnemies++
 
         }
