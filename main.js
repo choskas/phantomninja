@@ -8,6 +8,7 @@ const canvas = document.querySelector('canvas')
 const ctx = canvas.getContext('2d')
 let frames = 0
 let score = 0
+let contenemies=0
 let badCharacters = []
 //enemies
 
@@ -67,35 +68,28 @@ class Player {
     
 }
 
-class Enemies {
-    contructor(x, y) {
-        this.x = x
-        this.y = y
-        this.width = 100
-        this.height = 150
-        
-        this.enemy = new Array()
 
-        this.enemy[0] = new Image()
-        this.enemy[0].src = './assets/Enemies/big_demon_idle_anim_f0.png'
-        this.enemy[1] = new Image()
-        this.enemy[1].src = './assets/Enemies/big_zombie_idle_anim_f0.png'
-        this.enemy[2] = new Image()
-        this.enemy[2].src = './assets/Enemies/masked_orc_idle_anim_f0.png'
-        this.enemy[3] = new Image()
-        this.enemy[3].src = './assets/Enemies/ogre_idle_anim_f0.png'
-        this.enemy[4] = new Image()
-        this.enemy[4].src = './assets/Enemies/swampy_run_anim_f2.png'
-        this.enemy[5] = new Image()
-        this.enemy[5].src = './assets/Enemies/wizzart_m_hit_anim_f0.png'
-        this.enemy[6] = new Image()
-        this.enemy[6].src = './assets/Enemies/zombie_idle_anim_f1.png'
+
+class enemigoss{
+    constructor (x,y,imagen)
+    {
+        this.x=x
+        this.y=y
+        this.width=100
+        this.height=150
+        this.img=new Image()
+
+        this.img.src=imagen
+        this.alive=true
 
     }
-    draw() {
-        ctx.drawImage( this.x, this.y, this.width, this.height, this.enemy)
+    draw(){
+        ctx.drawImage(this.img,this.x,this.y,this.width,this.height)
     }
+
 }
+
+
 
 class Warrior {
     constructor(x, y) {
@@ -115,6 +109,8 @@ class Warrior {
 const board = new Board()
 const player1 = new Player(100, 600)
 const warrior = new Warrior(800, 200)
+//const en=new Enemies(100,50,'algo')
+
 
 
 
@@ -136,21 +132,57 @@ function startBeep(){
 
 
 function generateEnemie() {
+
+    enemy = new Array()
+
+    
+    enemy[0] = './assets/Enemies/big_demon_idle_anim_f0.png'
+    enemy[1] = './assets/Enemies/big_zombie_idle_anim_f0.png'
+    enemy[2] = './assets/Enemies/masked_orc_idle_anim_f0.png'
+    enemy[3] = './assets/Enemies/ogre_idle_anim_f0.png'
+    enemy[4] = './assets/Enemies/swampy_run_anim_f2.png'
+    enemy[5] = './assets/Enemies/wizzart_m_hit_anim_f0.png'
+    enemy[6] = './assets/Enemies/zombie_idle_anim_f1.png'
+
+   let selecciona= selectEnemy()
+  
+   
+
    let x = canvas.width
    let y = canvas.height
+   let i=new Image()
+    let texto
+    let valores = new Array()
+
+
     if (frames % 200 === 0) {
-        let randomX = Math.floor(Math.random() * (x))
-        let randomY = Math.floor(Math.random() * (y))
-        badCharacters.push(new Enemies(randomX, randomY))
+        let randomX = Math.floor((Math.random() * x) + 1)
+        let randomY = Math.floor((Math.random() * y) + 1)
+     
+      texto =enemy[selecciona]
+    valores[0]=randomX
+    valores[1]=randomY
+    valores[2]=texto
+  
+
+  badCharacters.push(new enemigoss(valores[0],valores[1],valores[2]))
+  
+ 
+
+//        const enemigos= new Enemies(randomX,randomY,texto)
+  //      enemigos.draw()
+        
         
     }
 }
 
-function drawEnemy() {
-    badCharacters.forEach(enemy => {
-        enemy.draw()
-    })
+function selectEnemy(){
+    let aleatorio = Math.floor((Math.random() * 100) + 1)
+    let selection = aleatorio % 7
+    return selection 
 }
+
+
 
 function drawScore() {
     if (frames % 200 === 0) {
@@ -175,28 +207,71 @@ function update() {
     board.draw()
     player1.draw()
     warrior.draw()
-    generateEnemie()
-    drawEnemy()
+   generateEnemie() 
+   
+   drawenemies()
+   
     drawScore()
 
 
 }
+function drawenemies() 
+{
+    badCharacters.forEach(character =>{
+        
+        if (character.alive==true)
+        character.draw()
+        
+       })
+    
 
+}
+
+//funcion killplayer = misma funcion
+
+function killenemie(xclick,yclick)
+{
+    let xmin=xclick-100
+    let xmax=xclick+100
+    let ymin=yclick-100
+    let ymax=yclick+100
+
+    badCharacters.forEach(character=>{
+        if ((character.x>=xmin && character.x<= xmax) && (character.y>=ymin && character.y<= ymax) )
+        {
+            character.alive=false
+
+        }
+    })
+
+}
+function MoveWarrior(x,y)
+{
+
+    warrior.x=x
+    warrior.y=y
+}
 //movimiento mouse 
 
     
     function getMousePos(canvas, evt) {
+        var rect = canvas.getBoundingClientRect()
       return {
-        x: evt.clientX,
-        y: evt.clientY
+        x: evt.clientX - rect.left,
+        y: evt.clientY - rect.top,
+
+        
       }
     }
 
-    canvas.addEventListener('mousemove', function(evt) {
+    canvas.addEventListener('click', function(evt) {
       var mousePos = getMousePos(canvas, evt);
       var message = 'Mouse position: ' + mousePos.x + ',' + mousePos.y;
       console.log(message);
-      
+     MoveWarrior(mousePos.x,mousePos.y)
+     killenemie(mousePos.x, mousePos.y)
+
+     
      
     }, false);
 
