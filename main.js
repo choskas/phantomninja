@@ -5,6 +5,9 @@ const titleAudio = document.querySelector('#titlemusic')
 const walkAudio = document.querySelector('#walk')
 const startAudio = document.querySelector('#startsound')
 const slashAudio = document.querySelector('#slash')
+const pickAudio = document.querySelector('#pickcoin')
+const winAudio = document.querySelector('#wins')
+const enemyAudio = document.querySelector('#enemyappear')
 const canvas = document.querySelector('canvas')
 const ctx = canvas.getContext('2d')
 let frames = 0
@@ -163,7 +166,17 @@ function slashSound() {
     slashAudio.play()
 }
 
+function pickSound(){
+    pickAudio.play()
+}
 
+function winSound(){
+    winAudio.play()
+}
+
+function enemySound(){
+    enemyAudio.play()
+}
 
 function generateSun() {
     if (frames % 100 === 0) {
@@ -187,6 +200,7 @@ function getSun() {
     sunCoins.forEach((suns, index) => {
         if (player1.isTouching(suns)) {
             score++
+            pickSound()
             sunCoins.splice(index, 1)  //borra uno del indice, quita soles
         }
     })
@@ -206,6 +220,7 @@ function winScreen(){
 
 function youWin(){
     if(score === 20){ 
+        winSound()
         return winScreen()
     }
 }
@@ -235,7 +250,7 @@ function generateEnemie() {
     let valores = new Array()
 
 
-    if (frames % 80 === 0) {
+    if (frames % 100 === 0) {
         let randomX = Math.floor((Math.random() * x) + 1)
         let randomY = Math.floor((Math.random() * y) + 1)
 
@@ -246,7 +261,7 @@ function generateEnemie() {
 
 
         badCharacters.push(new enemigoss(valores[0], valores[1], valores[2]))
-
+        enemySound()
 
 
         //        const enemigos= new Enemies(randomX,randomY,texto)
@@ -286,6 +301,58 @@ function start() {
 
 }
 
+function start2() {
+    menu.style.display = 'none'
+    gameBoard.style.display = ''
+    interval = setInterval(update, 500 / 60)
+    
+}
+
+function generateEnemie2() {
+
+    enemy = new Array()
+
+
+    enemy[0] = './assets/Enemies/big_demon_idle_anim_f0.png'
+    enemy[1] = './assets/Enemies/big_zombie_idle_anim_f0.png'
+    enemy[2] = './assets/Enemies/masked_orc_idle_anim_f0.png'
+    enemy[3] = './assets/Enemies/ogre_idle_anim_f0.png'
+    enemy[4] = './assets/Enemies/swampy_run_anim_f2.png'
+    enemy[5] = './assets/Enemies/wizzart_m_hit_anim_f0.png'
+    enemy[6] = './assets/Enemies/zombie_idle_anim_f1.png'
+
+    let selecciona = selectEnemy()
+
+
+
+    let x = canvas.width
+    let y = canvas.height
+    let i = new Image()
+    let texto
+    let valores = new Array()
+
+
+    if (frames % 300 === 0) {
+        let randomX = Math.floor((Math.random() * x) + 1)
+        let randomY = Math.floor((Math.random() * y) + 1)
+
+        texto = enemy[selecciona]
+        valores[0] = randomX
+        valores[1] = randomY
+        valores[2] = texto
+
+
+        badCharacters.push(new enemigoss(valores[0], valores[1], valores[2]))
+
+
+
+        //        const enemigos= new Enemies(randomX,randomY,texto)
+        //      enemigos.draw()
+
+
+    }
+}
+
 
 function update() {
     ctx.clearRect(0, 0, canvas.width, canvas.height)
@@ -311,7 +378,7 @@ function drawenemies() {
 
         if (character.alive == true)
             character.draw()
-
+            
     })
 
 
@@ -417,6 +484,10 @@ document.onkeydown = event => {
             break
         case 80:
             restart()
+            break
+        case 32:
+            start2()
+            startBeep()
             break
     }
 
