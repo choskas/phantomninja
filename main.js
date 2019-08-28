@@ -46,8 +46,8 @@ class Player {
     constructor(x, y) {
         this.x = x
         this.y = y
-        this.width = 40
-        this.height = 75
+        this.width = 70
+        this.height = 100
         this.img = new Image()
         this.img.src = './assets/player1.png'
 
@@ -70,9 +70,9 @@ class Player {
 
     isTouching(enemy) {
         return (
-            this.x < enemy.x + enemy.width &&
+            this.x < enemy.x + (enemy.width- 50) &&
             this.x + this.width > enemy.x &&
-            this.y < enemy.y + enemy.height &&
+            this.y < enemy.y + (enemy.height- 50) &&
             this.y + this.height > enemy.y
         )
     }
@@ -92,8 +92,8 @@ class enemigoss {
     constructor(x, y, imagen) {
         this.x = x
         this.y = y
-        this.width = 90
-        this.height = 100
+        this.width = 120
+        this.height = 140
         this.img = new Image()
 
         this.img.src = imagen
@@ -112,8 +112,8 @@ class Warrior {
     constructor(x, y) {
         this.x = x
         this.y = y
-        this.width = 40
-        this.height = 75
+        this.width = 70
+        this.height = 100
         this.img = new Image()
         this.img.src = './assets/warrior.png'
 
@@ -166,7 +166,7 @@ function slashSound() {
 
 
 function generateSun() {
-    if (frames % 200 === 0) {
+    if (frames % 100 === 0) {
         let x = canvas.width
         let y = canvas.height
         let randomX = Math.floor((Math.random() * x) + 1)
@@ -187,14 +187,28 @@ function getSun() {
     sunCoins.forEach((suns, index) => {
         if (player1.isTouching(suns)) {
             score++
-            sunCoins.splice(index, 1)
+            sunCoins.splice(index, 1)  //borra uno del indice, quita soles
         }
     })
 
 
 }
 
+function winScreen(){
+    
+        ctx.font = '30px Courier'
+        ctx.fillText(`You win!! DOM is awake! killed Enemies: ${deadEnemies}`, canvas.width / 2 - 400, 400)
+        ctx.font = '30px Courier'
+        ctx.fillText(`Press "P" to restart!`, canvas.width / 2, 600)
+        clearInterval(interval)
+    
+}
 
+function youWin(){
+    if(score === 20){ 
+        return winScreen()
+    }
+}
 
 
 function generateEnemie() {
@@ -221,7 +235,7 @@ function generateEnemie() {
     let valores = new Array()
 
 
-    if (frames % 200 === 0) {
+    if (frames % 80 === 0) {
         let randomX = Math.floor((Math.random() * x) + 1)
         let randomY = Math.floor((Math.random() * y) + 1)
 
@@ -288,6 +302,7 @@ function update() {
     drawScore()
     drawScore2()
     killPlayer()
+    youWin()
 
 }
 

@@ -51,7 +51,7 @@ div span{
 
 #menu{
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     background-color: black;
     font-size: 50px;
     height: 1000px;
@@ -83,7 +83,11 @@ div span{
 
 #logodiv{
     display: flex;
-    flex-direction: column
+    flex-direction: column;
+    justify-content: center;
+    width: 800px;
+    margin-left: 30vw;
+    justify-items: center;
 }
 
 .enemyimage{
@@ -95,4 +99,12 @@ div span{
     display: flex;
     flex-direction: row;
     justify-content: space-between
+}
+
+#menu p {
+    margin-top: 15vh;
+    color: white;
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 50px;
+    text-align: center;
 }
