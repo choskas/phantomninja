@@ -17,6 +17,8 @@ let contenemies = 0
 let badCharacters = []
 let sunCoins = []
 let badCharactersTwo = []
+let badCharactersThree = []
+let badCharactersFour = []
 //enemies
 
 
@@ -74,9 +76,9 @@ class Player {
 
     isTouchingE(enemy) {
         return (
-            this.x < enemy.x + (enemy.width - 35) &&
+            this.x < enemy.x + (enemy.width - 40) &&
             this.x + this.width > enemy.x &&
-            this.y < enemy.y + (enemy.height - 35) &&
+            this.y < enemy.y + (enemy.height - 40) &&
             this.y + this.height > enemy.y
         )
     }
@@ -110,6 +112,14 @@ class enemigoss {
     }
     drawD(){
         this.x++
+        ctx.drawImage(this.img, this.x, this.y, this.width, this.height)
+    }
+    drawU(){
+        this.y++
+        ctx.drawImage(this.img, this.x, this.y, this.width, this.height)
+    }
+    drawF(){
+        this.y++
         ctx.drawImage(this.img, this.x, this.y, this.width, this.height)
     }
 
@@ -148,7 +158,7 @@ class Sun {
 }
 
 const board = new Board()
-const player1 = new Player(100, 600)
+const player1 = new Player(canvas.width/2, canvas.height/2)
 const warrior = new Warrior(800, 200)
 //const en=new Enemies(100,50,'algo')
 
@@ -266,7 +276,7 @@ function generateEnemie() {
         valores[2] = texto
 
 
-        badCharacters.push(new enemigoss(canvas.width, valores[1], valores[2]))
+        badCharacters.push(new enemigoss(canvas.width + 5, valores[1], valores[2]))
         enemySound()
 
 
@@ -394,7 +404,95 @@ function generateEnemie2() {
         valores[2] = texto
 
 
-        badCharactersTwo.push(new enemigoss(0, valores[1], valores[2]))
+        badCharactersTwo.push(new enemigoss(-100, valores[1], valores[2]))
+
+
+
+        //        const enemigos= new Enemies(randomX,randomY,texto)
+        //      enemigos.draw()
+
+
+    }
+}
+
+function generateEnemie3(){
+    enemy = new Array()
+
+
+    enemy[0] = './assets/Enemies/big_demon_idle_anim_f0.png'
+    enemy[1] = './assets/Enemies/big_zombie_idle_anim_f0.png'
+    enemy[2] = './assets/Enemies/masked_orc_idle_anim_f0.png'
+    enemy[3] = './assets/Enemies/ogre_idle_anim_f0.png'
+    enemy[4] = './assets/Enemies/swampy_run_anim_f2.png'
+    enemy[5] = './assets/Enemies/wizzart_m_hit_anim_f0.png'
+    enemy[6] = './assets/Enemies/zombie_idle_anim_f1.png'
+
+    let selecciona = selectEnemy()
+
+
+
+    let x = canvas.width
+    let y = canvas.height
+    let i = new Image()
+    let texto
+    let valores = new Array()
+
+
+    if (score >= 10 && frames % 100 === 0 ) {
+        let randomX = Math.floor((Math.random() * x) + 1)
+        let randomY = Math.floor((Math.random() * y) + 1)
+
+        texto = enemy[selecciona]
+        valores[0] = randomX
+        valores[1] = randomY
+        valores[2] = texto
+
+
+        badCharactersThree.push(new enemigoss(randomX, -100, valores[2]))
+
+
+
+        //        const enemigos= new Enemies(randomX,randomY,texto)
+        //      enemigos.draw()
+
+
+    }
+}
+
+function generateEnemie4(){
+    enemy = new Array()
+
+
+    enemy[0] = './assets/Enemies/big_demon_idle_anim_f0.png'
+    enemy[1] = './assets/Enemies/big_zombie_idle_anim_f0.png'
+    enemy[2] = './assets/Enemies/masked_orc_idle_anim_f0.png'
+    enemy[3] = './assets/Enemies/ogre_idle_anim_f0.png'
+    enemy[4] = './assets/Enemies/swampy_run_anim_f2.png'
+    enemy[5] = './assets/Enemies/wizzart_m_hit_anim_f0.png'
+    enemy[6] = './assets/Enemies/zombie_idle_anim_f1.png'
+
+    let selecciona = selectEnemy()
+
+
+
+    let x = canvas.width
+    let y = canvas.height
+    let i = new Image()
+    let texto
+    let valores = new Array()
+
+
+    if (score >= 19) {
+        let randomX = Math.floor((Math.random() * x) + 1)
+        let randomY = Math.floor((Math.random() * y) + 1)
+
+        texto = enemy[selecciona]
+        valores[0] = randomX
+        valores[1] = randomY
+        valores[2] = texto
+
+
+        badCharactersFour.push(new enemigoss(randomX, -100, valores[2]))
 
 
 
@@ -414,8 +512,12 @@ function update() {
     warrior.draw()
     generateEnemie()
     generateEnemie2()
+    generateEnemie3()
+    generateEnemie4()
     drawenemies()
     drawenemies2()
+    drawenemies3()
+    drawenemies4()
     generateSun()
     drawSun()
     getSun()
@@ -448,6 +550,26 @@ function drawenemies2() {
 
 
 }
+function drawenemies3() {
+    badCharactersThree.forEach(character => {
+
+        if (character.alive == true)
+            character.drawU()
+            
+    })
+
+
+}
+function drawenemies4() {
+    badCharactersFour.forEach(character => {
+
+        if (character.alive == true)
+            character.drawF()
+            
+    })
+
+
+}
 
 function gameOver() {
     ctx.font = '30px Courier'
@@ -463,6 +585,12 @@ function killPlayer() {
         if (player1.isTouchingE(character)) return gameOver()
     })
     badCharactersTwo.forEach(character => {
+        if (player1.isTouchingE(character)) return gameOver()
+    })
+    badCharactersThree.forEach(character => {
+        if (player1.isTouchingE(character)) return gameOver()
+    })
+    badCharactersFour.forEach(character => {
         if (player1.isTouchingE(character)) return gameOver()
     })
 }
@@ -485,6 +613,24 @@ function killenemie(xclick, yclick) {
         }
     })
     badCharactersTwo.forEach(character => {
+        if ((character.x >= xmin && character.x <= xmax) && (character.y >= ymin && character.y <= ymax)) {
+            character.alive = false
+            character.x = 2000
+            character.y = 2000
+            deadEnemies++
+
+        }
+    })
+    badCharactersThree.forEach(character => {
+        if ((character.x >= xmin && character.x <= xmax) && (character.y >= ymin && character.y <= ymax)) {
+            character.alive = false
+            character.x = 2000
+            character.y = 2000
+            deadEnemies++
+
+        }
+    })
+    badCharactersFour.forEach(character => {
         if ((character.x >= xmin && character.x <= xmax) && (character.y >= ymin && character.y <= ymax)) {
             character.alive = false
             character.x = 2000
