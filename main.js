@@ -72,11 +72,11 @@ class Player {
         this.x -= 30
     }
 
-    isTouching(enemy) {
+    isTouchingE(enemy) {
         return (
-            this.x < enemy.x + enemy.width &&
+            this.x < enemy.x + (enemy.width - 35) &&
             this.x + this.width > enemy.x &&
-            this.y < enemy.y + enemy.height &&
+            this.y < enemy.y + (enemy.height - 35) &&
             this.y + this.height > enemy.y
         )
     }
@@ -460,10 +460,10 @@ function gameOver() {
 //funcion killplayer = misma funcion
 function killPlayer() {
     badCharacters.forEach(character => {
-        if (player1.isTouching(character)) return gameOver()
+        if (player1.isTouchingE(character)) return gameOver()
     })
     badCharactersTwo.forEach(character => {
-        if (player1.isTouching(character)) return gameOver()
+        if (player1.isTouchingE(character)) return gameOver()
     })
 }
 
