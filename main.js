@@ -110,15 +110,15 @@ class enemigoss {
         this.x--
         ctx.drawImage(this.img, this.x, this.y, this.width, this.height)
     }
-    drawD(){
+    drawD() {
         this.x++
         ctx.drawImage(this.img, this.x, this.y, this.width, this.height)
     }
-    drawU(){
+    drawU() {
         this.y++
         ctx.drawImage(this.img, this.x, this.y, this.width, this.height)
     }
-    drawF(){
+    drawF() {
         this.y++
         ctx.drawImage(this.img, this.x, this.y, this.width, this.height)
     }
@@ -158,7 +158,7 @@ class Sun {
 }
 
 const board = new Board()
-const player1 = new Player(canvas.width/2, canvas.height/2)
+const player1 = new Player(canvas.width / 2, canvas.height / 2)
 const warrior = new Warrior(800, 200)
 //const en=new Enemies(100,50,'algo')
 
@@ -182,15 +182,15 @@ function slashSound() {
     slashAudio.play()
 }
 
-function pickSound(){
+function pickSound() {
     pickAudio.play()
 }
 
-function winSound(){
+function winSound() {
     winAudio.play()
 }
 
-function enemySound(){
+function enemySound() {
     enemyAudio.play()
 }
 
@@ -217,25 +217,25 @@ function getSun() {
         if (player1.isTouching(suns)) {
             score++
             pickSound()
-            sunCoins.splice(index, 1)  //borra uno del indice, quita soles
+            sunCoins.splice(index, 1) //borra uno del indice, quita soles
         }
     })
 
 
 }
 
-function winScreen(){
-    
-        ctx.font = '30px Courier'
-        ctx.fillText(`You win!! DOM is awake! killed Enemies: ${deadEnemies}`, canvas.width / 2 - 400, 400)
-        ctx.font = '30px Courier'
-        ctx.fillText(`Press "P" to restart!`, canvas.width / 2, 600)
-        clearInterval(interval)
-    
+function winScreen() {
+
+    ctx.font = '30px Courier'
+    ctx.fillText(`You win!! DOM is awake! killed Enemies: ${deadEnemies}`, canvas.width / 2 - 400, 400)
+    ctx.font = '30px Courier'
+    ctx.fillText(`Press "P" to restart!`, canvas.width / 2, 600)
+    clearInterval(interval)
+
 }
 
-function youWin(){
-    if(score === 20){ 
+function youWin() {
+    if (score >= 20) {
         winSound()
         return winScreen()
     }
@@ -271,7 +271,7 @@ function generateEnemie() {
         let randomY = Math.floor((Math.random() * y) + 1)
 
         texto = enemy[selecciona]
-        valores[0] = randomX  //deje de utilizar valor random en x codigo original abajo
+        valores[0] = randomX //deje de utilizar valor random en x codigo original abajo
         valores[1] = randomY
         valores[2] = texto
 
@@ -280,7 +280,7 @@ function generateEnemie() {
         enemySound()
 
 
-       
+
 
 
     }
@@ -327,7 +327,7 @@ function generateEnemie() {
 //         enemySound()
 
 
-       
+
 
 
 //     }
@@ -367,7 +367,7 @@ function start2() {
     menu.style.display = 'none'
     gameBoard.style.display = ''
     interval = setInterval(update, 500 / 60)
-    
+
 }
 
 function generateEnemie2() {
@@ -415,7 +415,7 @@ function generateEnemie2() {
     }
 }
 
-function generateEnemie3(){
+function generateEnemie3() {
     enemy = new Array()
 
 
@@ -438,7 +438,7 @@ function generateEnemie3(){
     let valores = new Array()
 
 
-    if (score >= 10 && frames % 100 === 0 ) {
+    if (score >= 10 && frames % 100 === 0) {
         let randomX = Math.floor((Math.random() * x) + 1)
         let randomY = Math.floor((Math.random() * y) + 1)
 
@@ -459,7 +459,7 @@ function generateEnemie3(){
     }
 }
 
-function generateEnemie4(){
+function generateEnemie4() {
     enemy = new Array()
 
 
@@ -534,7 +534,7 @@ function drawenemies() {
 
         if (character.alive == true)
             character.draw()
-            
+
     })
 
 
@@ -545,27 +545,29 @@ function drawenemies2() {
 
         if (character.alive == true)
             character.drawD()
-            
+
     })
 
 
 }
+
 function drawenemies3() {
     badCharactersThree.forEach(character => {
 
         if (character.alive == true)
             character.drawU()
-            
+
     })
 
 
 }
+
 function drawenemies4() {
     badCharactersFour.forEach(character => {
 
         if (character.alive == true)
             character.drawF()
-            
+
     })
 
 
@@ -710,6 +712,9 @@ document.onkeydown = event => {
         case 32:
             start2()
             startBeep()
+            break
+        case 48:
+            score = score + 1
             break
     }
 
