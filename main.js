@@ -16,6 +16,7 @@ let deadEnemies = 0
 let contenemies = 0
 let badCharacters = []
 let sunCoins = []
+let badCharactersTwo = []
 //enemies
 
 
@@ -73,9 +74,9 @@ class Player {
 
     isTouching(enemy) {
         return (
-            this.x < enemy.x + (enemy.width- 50) &&
+            this.x < enemy.x + enemy.width &&
             this.x + this.width > enemy.x &&
-            this.y < enemy.y + (enemy.height- 50) &&
+            this.y < enemy.y + enemy.height &&
             this.y + this.height > enemy.y
         )
     }
@@ -104,6 +105,11 @@ class enemigoss {
 
     }
     draw() {
+        this.x--
+        ctx.drawImage(this.img, this.x, this.y, this.width, this.height)
+    }
+    drawD(){
+        this.x++
         ctx.drawImage(this.img, this.x, this.y, this.width, this.height)
     }
 
@@ -255,21 +261,67 @@ function generateEnemie() {
         let randomY = Math.floor((Math.random() * y) + 1)
 
         texto = enemy[selecciona]
-        valores[0] = randomX
+        valores[0] = randomX  //deje de utilizar valor random en x codigo original abajo
         valores[1] = randomY
         valores[2] = texto
 
 
-        badCharacters.push(new enemigoss(valores[0], valores[1], valores[2]))
+        badCharacters.push(new enemigoss(canvas.width, valores[1], valores[2]))
         enemySound()
 
 
-        //        const enemigos= new Enemies(randomX,randomY,texto)
-        //      enemigos.draw()
+       
 
 
     }
 }
+
+
+
+
+// function generateEnemie() {
+
+//     enemy = new Array()
+
+
+//     enemy[0] = './assets/Enemies/big_demon_idle_anim_f0.png'
+//     enemy[1] = './assets/Enemies/big_zombie_idle_anim_f0.png'
+//     enemy[2] = './assets/Enemies/masked_orc_idle_anim_f0.png'
+//     enemy[3] = './assets/Enemies/ogre_idle_anim_f0.png'
+//     enemy[4] = './assets/Enemies/swampy_run_anim_f2.png'
+//     enemy[5] = './assets/Enemies/wizzart_m_hit_anim_f0.png'
+//     enemy[6] = './assets/Enemies/zombie_idle_anim_f1.png'
+
+//     let selecciona = selectEnemy()
+
+
+
+//     let x = canvas.width
+//     let y = canvas.height
+//     let i = new Image()
+//     let texto
+//     let valores = new Array()
+
+
+//     if (frames % 100 === 0) {
+//         let randomX = Math.floor((Math.random() * x) + 1)
+//         let randomY = Math.floor((Math.random() * y) + 1)
+
+//         texto = enemy[selecciona]
+//         valores[0] = randomX  //deje de utilizar valor random en x codigo original abajo
+//         valores[1] = randomY
+//         valores[2] = texto
+
+
+//         badCharacters.push(new enemigoss(valores[0], valores[1], valores[2]))
+//         enemySound()
+
+
+       
+
+
+//     }
+// }
 
 function selectEnemy() {
     let aleatorio = Math.floor((Math.random() * 100) + 1)
@@ -332,7 +384,7 @@ function generateEnemie2() {
     let valores = new Array()
 
 
-    if (frames % 300 === 0) {
+    if (frames % 100 === 0) {
         let randomX = Math.floor((Math.random() * x) + 1)
         let randomY = Math.floor((Math.random() * y) + 1)
 
@@ -342,7 +394,7 @@ function generateEnemie2() {
         valores[2] = texto
 
 
-        badCharacters.push(new enemigoss(valores[0], valores[1], valores[2]))
+        badCharactersTwo.push(new enemigoss(0, valores[1], valores[2]))
 
 
 
@@ -361,7 +413,9 @@ function update() {
     player1.draw()
     warrior.draw()
     generateEnemie()
+    generateEnemie2()
     drawenemies()
+    drawenemies2()
     generateSun()
     drawSun()
     getSun()
@@ -384,6 +438,17 @@ function drawenemies() {
 
 }
 
+function drawenemies2() {
+    badCharactersTwo.forEach(character => {
+
+        if (character.alive == true)
+            character.drawD()
+            
+    })
+
+
+}
+
 function gameOver() {
     ctx.font = '30px Courier'
     ctx.fillText(`Game Over killed Enemies: ${deadEnemies} Sun Coins: ${score}`, canvas.width / 2 - 400, 400)
@@ -395,6 +460,9 @@ function gameOver() {
 //funcion killplayer = misma funcion
 function killPlayer() {
     badCharacters.forEach(character => {
+        if (player1.isTouching(character)) return gameOver()
+    })
+    badCharactersTwo.forEach(character => {
         if (player1.isTouching(character)) return gameOver()
     })
 }
@@ -416,7 +484,15 @@ function killenemie(xclick, yclick) {
 
         }
     })
+    badCharactersTwo.forEach(character => {
+        if ((character.x >= xmin && character.x <= xmax) && (character.y >= ymin && character.y <= ymax)) {
+            character.alive = false
+            character.x = 2000
+            character.y = 2000
+            deadEnemies++
 
+        }
+    })
 }
 
 function MoveWarrior(x, y) {
